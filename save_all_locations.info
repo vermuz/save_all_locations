@@ -1,0 +1,4 @@
+name = Save All Locations
+description = Choose all locations if no location chosen.
+package = Custom Modules
+core = 7.x

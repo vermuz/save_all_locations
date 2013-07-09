@@ -1,0 +1,18 @@
+<?php
+
+function save_all_locations_node_presave($node)
+{
+   $tids = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14);
+   if($node->field_locations['und'] == NULL)
+   {
+      foreach ($tids as $tid)
+      {
+         $node->field_locations['und'][]['tid'] = $tid;
+      }
+   }
+}
+
+function save_all_locations_node_view($node,$view_mode,$langcode)
+{
+
+}
