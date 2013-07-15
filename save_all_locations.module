@@ -1,18 +1,31 @@
 <?php
-
-function save_all_locations_node_presave($node)
-{
-   $tids = array(1,2,3,4,5,6,7,8,9,10,11,12,13,14);
-   if($node->field_locations['und'] == NULL)
-   {
-      foreach ($tids as $tid)
-      {
-         $node->field_locations['und'][]['tid'] = $tid;
-      }
-   }
-}
-
 function save_all_locations_node_view($node,$view_mode,$langcode)
 {
-
 }
+
+function save_all_locations_node_submit($node, $form, &$form_state)
+{	
+	// Vocabulary get term ids in an array
+	$terms = taxonomy_term_load_multiple(array(),array('vid' => 2));
+	
+	// Load Taxonomy containing all libraries and fill it in an array
+	foreach($terms as $term_node){
+		$list_of_ids[] = $term_node->tid;
+	}
+	
+	// Check All Fieldsets
+	for($i = 0; $i < 20 ; $i++)	{
+		// If the fieldset is set
+		if(isset($node->field_time_field_collection['und'][$i])){
+			// If the fieldset has no locations selected
+   			if(empty($node->field_time_field_collection['und'][$i]['field_locations']['und'])){
+   				foreach($list_of_ids as $term_id){
+   					//Set all locations
+   					$node->field_time_field_collection['und'][$i]['field_locations']['und'][] = array('tid' => $term_id);
+   					$node->field_time_field_collection['und'][$i]['entity']->field_locations['und'][] = array('tid' => $term_id);
+   				}
+   			}
+   		}
+   	}
+}
+
